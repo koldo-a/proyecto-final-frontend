@@ -17,10 +17,6 @@ const App = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL;
-
-
-
   const showLoginMessage = (message) => {
     setLoginMessage(message);
 
@@ -55,7 +51,7 @@ const App = () => {
 
   const handleLogout = async () => {
   try {
-    const response = await axios.get(`${API_URL}/logout`);
+    const response = await axios.get('https://backend-production-f350.up.railway.app/logout');
     console.log(response.data.message);
     setIsLoggedIn(false); 
     setItems([]); 
@@ -69,7 +65,7 @@ const App = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(`${API_URL}/register`, { email: email });
+      const response = await axios.post('https://backend-production-f350.up.railway.app/register', { email: email });
       if (response.status === 200) {
         showregisterMessage(response.data.message);
         setEmail('');
@@ -89,7 +85,7 @@ const App = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get(`${API_URL}/items`);
+      const response = await axios.get('https://backend-production-f350.up.railway.app/items');
       setItems(response.data.filter(item => item.itemiduser === idusers));
       console.log(response.data);
       console.log(email)
@@ -115,7 +111,7 @@ const App = () => {
   const handleAddItem = async () => {
     if (inputValue) {
       try {
-        const response = await axios.post(`${API_URL}/items`, { name: inputValue, itemiduser: idusers });
+        const response = await axios.post('https://backend-production-f350.up.railway.app/items', { name: inputValue, itemiduser: idusers });
         setInputValue('');
         fetchItems();
         console.log(response.data.message);
@@ -130,7 +126,7 @@ const App = () => {
     const newName = prompt('Enter the new name');
     if (newName) {
       try {
-        axios.put(`${API_URL}/items/${id}`, { name: newName })
+        axios.put(`https://backend-production-f350.up.railway.app/items/${id}`, { name: newName })
           .then(() => fetchItems()) 
           .catch((error) => console.error('Error editing item:', error));
       } catch (error) {
@@ -141,7 +137,7 @@ const App = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}/items/${id}`);
+      const response = await axios.delete(`https://backend-production-f350.up.railway.app/items/${id}`);
       fetchItems();
       console.log(response.data.message);
     } catch (error) {
